@@ -424,10 +424,10 @@ const DEFAULTS = {
     {symbol:'ETH', name:'Ethereum',    amount:'0.1008',   usd:'$250.00',   change:'+2.1%', dir:'up', frozen:false, frozenReason:''},
   ],
   activity:[
-    {type:'receive',label:'Received USDT',       sub:'2 min ago · 0x7a4b...c21f',amount:'+54,998.14 USDT',usd:'$54,998.14', failed:false, amtColor:'green'},
-    {type:'receive',label:'Received ETH',         sub:'1 hr ago · 0x9d2e...f44a', amount:'+0.1008 ETH',   usd:'$250.00',    failed:false, amtColor:'green'},
-    {type:'swap',   label:'Swapped USDT → ETH',  sub:'3 hr ago · Linea Swap',    amount:'1,000 USDT',    usd:'→ 0.403 ETH',failed:false, amtColor:'neutral'},
-    {type:'bridge', label:'Bridged from Ethereum',sub:'Yesterday · Linea Bridge', amount:'+0.5 ETH',      usd:'$1,240.00',  failed:false, amtColor:'green'},
+    {type:'receive',label:'Received USDT',       sub:'2 min ago · 0x7a4b...c21f',amount:'+54,998.14 USDT',usd:'$54,998.14', failed:false, amtColor:'green',  dir:'up', estTime:'~2-5 min'},
+    {type:'receive',label:'Received ETH',         sub:'1 hr ago · 0x9d2e...f44a', amount:'+0.1008 ETH',   usd:'$250.00',    failed:false, amtColor:'green',  dir:'up', estTime:'~2-5 min'},
+    {type:'swap',   label:'Swapped USDT → ETH',  sub:'3 hr ago · Linea Swap',    amount:'1,000 USDT',    usd:'→ 0.403 ETH',failed:false, amtColor:'neutral',dir:'up', estTime:'~30 sec'},
+    {type:'bridge', label:'Bridged from Ethereum',sub:'Yesterday · Linea Bridge', amount:'+0.5 ETH',      usd:'$1,240.00',  failed:false, amtColor:'green',  dir:'up', estTime:'~4-6 hours'},
   ],
 };
 
@@ -440,7 +440,7 @@ let state = loadState();
 // ensure new fields exist on old saved state
 if(!state.alert) state.alert = JSON.parse(JSON.stringify(DEFAULTS.alert));
 state.tokens.forEach(t=>{if(t.frozen===undefined){t.frozen=false;t.frozenReason='';}});
-state.activity.forEach(a=>{if(a.failed===undefined)a.failed=false;if(a.amtColor===undefined)a.amtColor=a.type==='send'?'orange':a.type==='receive'?'green':'neutral';});
+state.activity.forEach(a=>{if(a.failed===undefined)a.failed=false;if(a.amtColor===undefined)a.amtColor=a.type==='send'?'orange':a.type==='receive'?'green':'neutral';if(a.dir===undefined)a.dir='up';if(a.estTime===undefined)a.estTime='';});
 
 function save(){try{localStorage.setItem('lineaWalletState2',JSON.stringify(state));}catch(e){}}
 
@@ -500,15 +500,17 @@ function render(){
     const statusDot = isFailed ? `<span class="status-dot failed"></span>` : `<span class="status-dot"></span>`;
     const badge = isFailed ? `<div style="margin-top:3px"><span class="failed-badge">✕ Failed</span></div>` : '';
     const retry = isFailed ? `<button class="retry-btn" onclick="toast('Retrying transaction...')">Retry</button>` : '';
+    const estTime = a.estTime ? `<div style="font-size:10px;color:var(--linea);margin-top:2px;font-family:'Space Mono',monospace;">⏱ ${a.estTime}</div>` : '';
     return `<div class="act-item${isFailed?' failed':''}">
       <div class="act-ico" style="background:${c.bg};color:${c.fg};">${icon}</div>
       <div style="flex:1">
         <div class="act-title" style="${isFailed?'color:var(--muted)':''}">${a.label}</div>
         <div class="act-sub">${statusDot}${a.sub}</div>
         ${badge}
+        ${estTime}
       </div>
       <div style="text-align:right">
-        <div class="act-amt" style="color:${amtColor};${isFailed?'text-decoration:line-through':''}">${a.amount}</div>
+        <div class="act-amt" style="color:${amtColor};${isFailed?'text-decoration:line-through':''}">${a.dir==='down'&&!isFailed?'−':''} ${a.amount}</div>
         <div class="act-usd">${a.usd}</div>
         ${retry}
       </div>
@@ -561,6 +563,12 @@ function renderDevPanel(){
       <div class="dev-field-label">Sub text</div><input class="dev-input" value="${a.sub}" oninput="state.activity[${i}].sub=this.value;save();render()">
       <div class="dev-field-label">Amount</div><input class="dev-input" value="${a.amount}" oninput="state.activity[${i}].amount=this.value;save();render()">
       <div class="dev-field-label">USD / secondary</div><input class="dev-input" value="${a.usd}" oninput="state.activity[${i}].usd=this.value;save();render()">
+      <div class="dev-field-label">Est. time</div><input class="dev-input" value="${a.estTime||''}" placeholder="e.g. ~4-6 hours" oninput="state.activity[${i}].estTime=this.value;save();render()">
+      <div class="dev-field-label">Direction</div>
+      <select class="dev-select" onchange="state.activity[${i}].dir=this.value;save();render()">
+        <option value="up" ${(a.dir||'up')==='up'?'selected':''}>Up ↑</option>
+        <option value="down" ${(a.dir||'up')==='down'?'selected':''}>Down ↓</option>
+      </select>
       <div class="dev-field-label">Amount colour</div>
       <select class="dev-select" onchange="state.activity[${i}].amtColor=this.value;save();render()">
         ${['green','orange','red','neutral','muted'].map(c=>`<option value="${c}" ${(a.amtColor||'neutral')===c?'selected':''}>${c}</option>`).join('')}
@@ -578,7 +586,7 @@ function updateToggle(id, on){
 }
 function addToken(){state.tokens.push({symbol:'NEW',name:'New Token',amount:'0',usd:'$0.00',change:'+0%',dir:'up',frozen:false,frozenReason:''});save();render();}
 function removeToken(i){state.tokens.splice(i,1);save();render();}
-function addActivity(){state.activity.unshift({type:'receive',label:'New Transaction',sub:'Just now',amount:'+0',usd:'$0.00',failed:false,amtColor:'green'});save();render();}
+function addActivity(){state.activity.unshift({type:'receive',label:'New Transaction',sub:'Just now',amount:'+0',usd:'$0.00',failed:false,amtColor:'green',dir:'up',estTime:''});save();render();}
 function removeActivity(i){state.activity.splice(i,1);save();render();}
 function resetState(){state=JSON.parse(JSON.stringify(DEFAULTS));save();render();toast('Reset to defaults');}
 
