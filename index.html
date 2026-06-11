@@ -17,6 +17,7 @@ body{background:var(--bg);color:var(--text);font-family:'Space Grotesk',sans-ser
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
 @keyframes slideUp{from{transform:translateY(100%);opacity:0}to{transform:translateY(0);opacity:1}}
 @keyframes panelIn{from{transform:translateX(110%)}to{transform:translateX(0)}}
+@keyframes alertPulse{0%,100%{opacity:1}50%{opacity:.7}}
 .app{width:100%;max-width:420px;display:flex;flex-direction:column;}
 .topbar{display:flex;align-items:center;justify-content:space-between;padding:16px 0 12px;}
 .logo{display:flex;align-items:center;gap:8px;font-family:'Space Mono',monospace;font-size:13px;font-weight:700;letter-spacing:.08em;color:var(--linea);text-transform:uppercase;}
@@ -25,92 +26,128 @@ body{background:var(--bg);color:var(--text);font-family:'Space Grotesk',sans-ser
 .net-dot{width:6px;height:6px;border-radius:50%;background:var(--green);box-shadow:0 0 6px var(--green);animation:pulse 2s infinite;}
 .icon-btn{width:34px;height:34px;border-radius:10px;border:1px solid var(--border);background:var(--card);display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--subtle);}
 .icon-btn.active{border-color:var(--linea);color:var(--linea);background:var(--linea-dim);}
-.account{display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--card);border:1px solid var(--border);border-radius:14px;cursor:pointer;margin-bottom:16px;}
+
+/* ALERT BANNER */
+.alert-banner{display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:14px;margin-bottom:12px;animation:alertPulse 3s infinite;}
+.alert-banner.warn{background:rgba(251,146,60,0.1);border:1px solid rgba(251,146,60,0.3);}
+.alert-banner.danger{background:rgba(248,113,113,0.1);border:1px solid rgba(248,113,113,0.3);}
+.alert-icon{width:32px;height:32px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:15px;}
+.alert-banner.warn .alert-icon{background:rgba(251,146,60,0.15);}
+.alert-banner.danger .alert-icon{background:rgba(248,113,113,0.15);}
+.alert-title{font-size:12px;font-weight:700;line-height:1.2;}
+.alert-banner.warn .alert-title{color:var(–orange);}
+.alert-banner.danger .alert-title{color:var(–red);}
+.alert-sub{font-size:10px;color:var(–muted);margin-top:2px;}
+.alert-close{margin-left:auto;color:var(–muted);background:none;border:none;cursor:pointer;font-size:16px;padding:2px 4px;}
+
+.account{display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(–card);border:1px solid var(–border);border-radius:14px;cursor:pointer;margin-bottom:16px;}
 .avatar{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,#61dfff 0%,#a78bfa 50%,#fb923c 100%);flex-shrink:0;}
 .acct-name{font-size:13px;font-weight:600;line-height:1.2;}
-.acct-addr{font-family:'Space Mono',monospace;font-size:10px;color:var(--muted);}
-.copy-btn{color:var(--muted);cursor:pointer;padding:4px;background:none;border:none;}
-.balance-card{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:24px;position:relative;overflow:hidden;margin-bottom:12px;}
-.balance-card::before{content:'';position:absolute;top:-60px;right:-60px;width:180px;height:180px;border-radius:50%;background:radial-gradient(circle,rgba(97,223,255,0.08) 0%,transparent 70%);pointer-events:none;}
-.bal-label{font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:8px;}
-.bal-amount{font-family:'Space Mono',monospace;font-size:36px;font-weight:700;line-height:1;margin-bottom:6px;letter-spacing:-.02em;}
-.bal-sub{font-size:13px;color:var(--muted);display:flex;align-items:center;gap:8px;}
+.acct-addr{font-family:‘Space Mono’,monospace;font-size:10px;color:var(–muted);}
+.copy-btn{color:var(–muted);cursor:pointer;padding:4px;background:none;border:none;}
+.balance-card{background:var(–card);border:1px solid var(–border);border-radius:20px;padding:24px;position:relative;overflow:hidden;margin-bottom:12px;}
+.balance-card::before{content:’’;position:absolute;top:-60px;right:-60px;width:180px;height:180px;border-radius:50%;background:radial-gradient(circle,rgba(97,223,255,0.08) 0%,transparent 70%);pointer-events:none;}
+.bal-label{font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:.1em;color:var(–muted);margin-bottom:8px;}
+.bal-amount{font-family:‘Space Mono’,monospace;font-size:36px;font-weight:700;line-height:1;margin-bottom:6px;letter-spacing:-.02em;}
+.bal-sub{font-size:13px;color:var(–muted);display:flex;align-items:center;gap:8px;}
 .change-tag{display:inline-flex;align-items:center;gap:3px;font-size:11px;font-weight:600;padding:2px 7px;border-radius:6px;}
-.change-tag.up{background:rgba(74,222,128,0.12);color:var(--green);}
-.change-tag.down{background:rgba(248,113,113,0.12);color:var(--red);}
+.change-tag.up{background:rgba(74,222,128,0.12);color:var(–green);}
+.change-tag.down{background:rgba(248,113,113,0.12);color:var(–red);}
 .actions{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:20px;}
 .act-btn{display:flex;flex-direction:column;align-items:center;gap:7px;cursor:pointer;border:none;background:none;padding:0;}
-.act-icon{width:52px;height:52px;border-radius:16px;background:var(--card);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;transition:all .2s;color:var(--linea);}
-.act-btn:active .act-icon{border-color:var(--linea);background:var(--linea-dim);box-shadow:0 0 16px var(--linea-glow);}
-.act-label{font-size:11px;font-weight:500;color:var(--subtle);}
+.act-icon{width:52px;height:52px;border-radius:16px;background:var(–card);border:1px solid var(–border);display:flex;align-items:center;justify-content:center;transition:all .2s;color:var(–linea);}
+.act-btn:active .act-icon{border-color:var(–linea);background:var(–linea-dim);box-shadow:0 0 16px var(–linea-glow);}
+.act-label{font-size:11px;font-weight:500;color:var(–subtle);}
 .sec-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
-.sec-title{font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);}
-.sec-link{font-size:11px;color:var(--linea);background:none;border:none;font-family:inherit;font-weight:500;cursor:pointer;}
+.sec-title{font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(–muted);}
+.sec-link{font-size:11px;color:var(–linea);background:none;border:none;font-family:inherit;font-weight:500;cursor:pointer;}
+
+/* TOKENS */
 .token-list{display:flex;flex-direction:column;gap:2px;margin-bottom:20px;}
-.token-item{display:flex;align-items:center;gap:12px;padding:12px 14px;background:var(--card);border:1px solid var(--border);border-radius:14px;cursor:pointer;margin-bottom:2px;}
-.tok-icon{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;font-family:'Space Mono',monospace;flex-shrink:0;}
+.token-item{display:flex;align-items:center;gap:12px;padding:12px 14px;background:var(–card);border:1px solid var(–border);border-radius:14px;cursor:pointer;margin-bottom:2px;position:relative;}
+.token-item.frozen{border-color:rgba(248,113,113,0.3);background:#16161f;}
+.token-item.frozen .tok-name,.token-item.frozen .tok-usd{color:var(–muted);}
+.tok-icon{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;font-family:‘Space Mono’,monospace;flex-shrink:0;position:relative;}
+.frozen-overlay{position:absolute;inset:0;border-radius:50%;background:rgba(10,10,15,0.6);display:flex;align-items:center;justify-content:center;font-size:14px;}
 .tok-name{font-size:13px;font-weight:600;line-height:1.2;}
-.tok-sub{font-size:11px;color:var(--muted);margin-top:1px;}
-.tok-usd{font-family:'Space Mono',monospace;font-size:13px;font-weight:700;text-align:right;line-height:1.2;}
+.tok-sub{font-size:11px;color:var(–muted);margin-top:1px;}
+.tok-usd{font-family:‘Space Mono’,monospace;font-size:13px;font-weight:700;text-align:right;line-height:1.2;}
 .tok-chg{font-size:10px;font-weight:600;margin-top:2px;text-align:right;}
-.tok-chg.up{color:var(--green);}
-.tok-chg.down{color:var(--red);}
+.tok-chg.up{color:var(–green);}
+.tok-chg.down{color:var(–red);}
+.frozen-tag{display:inline-flex;align-items:center;gap:3px;font-size:9px;font-weight:700;padding:2px 6px;border-radius:5px;background:rgba(248,113,113,0.12);color:var(–red);text-transform:uppercase;letter-spacing:.04em;margin-top:3px;}
+.frozen-reason{font-size:9px;color:var(–red);margin-top:2px;opacity:.8;}
+
+/* ACTIVITY */
 .act-list{display:flex;flex-direction:column;gap:2px;margin-bottom:24px;}
-.act-item{display:flex;align-items:center;gap:12px;padding:12px 14px;background:var(--card);border:1px solid var(--border);border-radius:14px;cursor:pointer;margin-bottom:2px;}
+.act-item{display:flex;align-items:center;gap:12px;padding:12px 14px;background:var(–card);border:1px solid var(–border);border-radius:14px;cursor:pointer;margin-bottom:2px;}
+.act-item.failed{border-color:rgba(248,113,113,0.25);background:#16161f;}
 .act-ico{width:36px;height:36px;border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
-.act-ico.send{background:rgba(251,146,60,0.12);color:var(--orange);}
-.act-ico.receive{background:rgba(74,222,128,0.12);color:var(--green);}
-.act-ico.swap{background:rgba(97,223,255,0.12);color:var(--linea);}
+.act-ico.send{background:rgba(251,146,60,0.12);color:var(–orange);}
+.act-ico.receive{background:rgba(74,222,128,0.12);color:var(–green);}
+.act-ico.swap{background:rgba(97,223,255,0.12);color:var(–linea);}
 .act-ico.bridge{background:rgba(167,139,250,0.12);color:#a78bfa;}
+.act-ico.failed-ico{background:rgba(248,113,113,0.12);color:var(–red);}
 .act-title{font-size:13px;font-weight:600;line-height:1.2;}
-.act-sub{font-size:10px;color:var(--muted);margin-top:2px;display:flex;align-items:center;gap:4px;}
-.status-dot{width:5px;height:5px;border-radius:50%;background:var(--green);display:inline-block;}
-.act-amt{font-family:'Space Mono',monospace;font-size:12px;font-weight:700;text-align:right;}
-.act-usd{font-size:10px;color:var(--muted);text-align:right;margin-top:2px;}
-.bottom-nav{position:sticky;bottom:0;background:var(--surface);border-top:1px solid var(--border);display:flex;justify-content:space-around;padding:10px 0 20px;margin:0 -16px;}
-.nav-item{display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;color:var(--muted);padding:4px 14px;border-radius:12px;}
-.nav-item.active{color:var(--linea);}
+.act-sub{font-size:10px;color:var(–muted);margin-top:2px;display:flex;align-items:center;gap:4px;}
+.status-dot{width:5px;height:5px;border-radius:50%;background:var(–green);display:inline-block;}
+.status-dot.failed{background:var(–red);}
+.act-amt{font-family:‘Space Mono’,monospace;font-size:12px;font-weight:700;text-align:right;}
+.act-usd{font-size:10px;color:var(–muted);text-align:right;margin-top:2px;}
+.failed-badge{display:inline-flex;align-items:center;gap:3px;font-size:9px;font-weight:700;padding:2px 6px;border-radius:5px;background:rgba(248,113,113,0.12);color:var(–red);text-transform:uppercase;letter-spacing:.04em;}
+.retry-btn{font-size:10px;font-weight:600;color:var(–linea);background:var(–linea-dim);border:1px solid rgba(97,223,255,0.2);border-radius:6px;padding:3px 8px;cursor:pointer;font-family:inherit;margin-top:4px;display:inline-block;}
+
+.bottom-nav{position:sticky;bottom:0;background:var(–surface);border-top:1px solid var(–border);display:flex;justify-content:space-around;padding:10px 0 20px;margin:0 -16px;}
+.nav-item{display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;color:var(–muted);padding:4px 14px;border-radius:12px;}
+.nav-item.active{color:var(–linea);}
 .nav-label{font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;}
 .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:100;align-items:flex-end;justify-content:center;backdrop-filter:blur(4px);}
 .modal-overlay.open{display:flex;}
-.modal{background:var(--surface);border:1px solid var(--border-bright);border-radius:24px 24px 0 0;width:100%;max-width:420px;padding:24px;animation:slideUp .25s ease;}
-.modal-handle{width:36px;height:4px;background:var(--border-bright);border-radius:2px;margin:0 auto 20px;}
+.modal{background:var(–surface);border:1px solid var(–border-bright);border-radius:24px 24px 0 0;width:100%;max-width:420px;padding:24px;animation:slideUp .25s ease;}
+.modal-handle{width:36px;height:4px;background:var(–border-bright);border-radius:2px;margin:0 auto 20px;}
 .modal-title{font-size:16px;font-weight:700;text-align:center;margin-bottom:20px;}
-.form-label{font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:6px;}
-.form-input{width:100%;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:12px 14px;color:var(--text);font-family:'Space Grotesk',sans-serif;font-size:14px;outline:none;margin-bottom:12px;}
-.form-input:focus{border-color:var(--linea);}
-.form-input::placeholder{color:var(--muted);}
-.btn-primary{width:100%;padding:14px;border-radius:14px;border:none;background:var(--linea);color:#0a0a0f;font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:700;cursor:pointer;margin-bottom:8px;}
-.btn-secondary{width:100%;padding:14px;border-radius:14px;border:1px solid var(--border);background:var(--card);color:var(--subtle);font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:700;cursor:pointer;}
-.tok-sel{display:flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:10px 14px;margin-bottom:12px;}
-.swap-info{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:10px 12px;font-size:11px;color:var(--muted);margin-bottom:12px;}
+.form-label{font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:.08em;color:var(–muted);margin-bottom:6px;}
+.form-input{width:100%;background:var(–card);border:1px solid var(–border);border-radius:12px;padding:12px 14px;color:var(–text);font-family:‘Space Grotesk’,sans-serif;font-size:14px;outline:none;margin-bottom:12px;}
+.form-input:focus{border-color:var(–linea);}
+.form-input::placeholder{color:var(–muted);}
+.btn-primary{width:100%;padding:14px;border-radius:14px;border:none;background:var(–linea);color:#0a0a0f;font-family:‘Space Grotesk’,sans-serif;font-size:14px;font-weight:700;cursor:pointer;margin-bottom:8px;}
+.btn-secondary{width:100%;padding:14px;border-radius:14px;border:1px solid var(–border);background:var(–card);color:var(–subtle);font-family:‘Space Grotesk’,sans-serif;font-size:14px;font-weight:700;cursor:pointer;}
+.tok-sel{display:flex;align-items:center;gap:8px;background:var(–card);border:1px solid var(–border);border-radius:12px;padding:10px 14px;margin-bottom:12px;}
+.swap-info{background:var(–card);border:1px solid var(–border);border-radius:10px;padding:10px 12px;font-size:11px;color:var(–muted);margin-bottom:12px;}
 .swap-row{display:flex;justify-content:space-between;margin-bottom:4px;}
 .bridge-row{display:grid;grid-template-columns:1fr auto 1fr;gap:8px;align-items:center;margin-bottom:12px;}
-.bridge-box{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:10px;text-align:center;}
-.bridge-box.active{background:var(--linea-dim);border-color:var(--linea);}
-.bridge-lbl{font-size:10px;color:var(--muted);margin-bottom:4px;}
+.bridge-box{background:var(–card);border:1px solid var(–border);border-radius:10px;padding:10px;text-align:center;}
+.bridge-box.active{background:var(–linea-dim);border-color:var(–linea);}
+.bridge-lbl{font-size:10px;color:var(–muted);margin-bottom:4px;}
 .bridge-name{font-size:13px;font-weight:600;}
-.toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--card);border:1px solid var(--border-bright);border-radius:20px;padding:8px 16px;font-size:12px;font-weight:500;color:var(--linea);opacity:0;pointer-events:none;transition:all .3s;z-index:300;white-space:nowrap;}
+.toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(20px);background:var(–card);border:1px solid var(–border-bright);border-radius:20px;padding:8px 16px;font-size:12px;font-weight:500;color:var(–linea);opacity:0;pointer-events:none;transition:all .3s;z-index:300;white-space:nowrap;}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
 .dev-panel{position:fixed;top:0;right:0;bottom:0;width:290px;background:#0d0d16;border-left:1px solid #1e1e2a;z-index:200;overflow-y:auto;padding:16px;animation:panelIn .2s ease;}
-.dev-section{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--linea);margin:16px 0 8px;padding-bottom:6px;border-bottom:1px solid #1e1e2a;}
-.dev-field-label{font-size:10px;color:var(--muted);margin-bottom:3px;text-transform:uppercase;letter-spacing:.06em;}
-.dev-input{width:100%;background:#0a0a14;border:1px solid #2a2a3a;border-radius:8px;padding:7px 10px;color:var(--text);font-family:'Space Grotesk',sans-serif;font-size:12px;outline:none;margin-bottom:8px;}
-.dev-input:focus{border-color:var(--linea);}
-.dev-select{width:100%;background:#0a0a14;border:1px solid #2a2a3a;border-radius:8px;padding:7px 10px;color:var(--text);font-family:'Space Grotesk',sans-serif;font-size:12px;outline:none;margin-bottom:8px;-webkit-appearance:none;}
+.dev-section{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(–linea);margin:16px 0 8px;padding-bottom:6px;border-bottom:1px solid #1e1e2a;}
+.dev-field-label{font-size:10px;color:var(–muted);margin-bottom:3px;text-transform:uppercase;letter-spacing:.06em;}
+.dev-input{width:100%;background:#0a0a14;border:1px solid #2a2a3a;border-radius:8px;padding:7px 10px;color:var(–text);font-family:‘Space Grotesk’,sans-serif;font-size:12px;outline:none;margin-bottom:8px;}
+.dev-input:focus{border-color:var(–linea);}
+.dev-select{width:100%;background:#0a0a14;border:1px solid #2a2a3a;border-radius:8px;padding:7px 10px;color:var(–text);font-family:‘Space Grotesk’,sans-serif;font-size:12px;outline:none;margin-bottom:8px;-webkit-appearance:none;}
 .dev-token-block{background:#12121a;border-radius:10px;padding:10px;margin-bottom:8px;border:1px solid #1e1e2a;}
 .dev-token-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
-.dev-remove{background:rgba(248,113,113,0.12);border:none;color:var(--red);border-radius:6px;padding:2px 8px;cursor:pointer;font-size:11px;}
-.dev-add-btn{width:100%;background:var(--linea-dim);border:1px dashed var(--linea);border-radius:10px;padding:8px;color:var(--linea);cursor:pointer;font-size:12px;font-weight:600;margin-bottom:4px;font-family:'Space Grotesk',sans-serif;}
-.dev-reset{width:100%;background:rgba(248,113,113,0.1);border:1px solid rgba(248,113,113,.3);border-radius:10px;padding:9px;color:var(--red);cursor:pointer;font-size:12px;font-weight:600;font-family:'Space Grotesk',sans-serif;}
+.dev-remove{background:rgba(248,113,113,0.12);border:none;color:var(–red);border-radius:6px;padding:2px 8px;cursor:pointer;font-size:11px;}
+.dev-add-btn{width:100%;background:var(–linea-dim);border:1px dashed var(–linea);border-radius:10px;padding:8px;color:var(–linea);cursor:pointer;font-size:12px;font-weight:600;margin-bottom:4px;font-family:‘Space Grotesk’,sans-serif;}
+.dev-reset{width:100%;background:rgba(248,113,113,0.1);border:1px solid rgba(248,113,113,.3);border-radius:10px;padding:9px;color:var(–red);cursor:pointer;font-size:12px;font-weight:600;font-family:‘Space Grotesk’,sans-serif;}
+.dev-toggle-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;}
+.dev-toggle{width:36px;height:20px;border-radius:10px;border:none;cursor:pointer;position:relative;transition:background .2s;flex-shrink:0;}
+.dev-toggle.on{background:var(–linea);}
+.dev-toggle.off{background:#2a2a3a;}
+.dev-toggle::after{content:’’;position:absolute;top:3px;width:14px;height:14px;border-radius:50%;background:white;transition:left .2s;}
+.dev-toggle.on::after{left:19px;}
+.dev-toggle.off::after{left:3px;}
 .qr-box{width:140px;height:140px;margin:0 auto 12px;background:white;border-radius:8px;display:flex;align-items:center;justify-content:center;padding:8px;}
-.addr-full{font-family:'Space Mono',monospace;font-size:10px;color:var(--muted);word-break:break-all;line-height:1.6;}
-.saved-badge{display:inline-flex;align-items:center;gap:4px;font-size:10px;color:var(--green);background:rgba(74,222,128,0.1);border:1px solid rgba(74,222,128,0.2);border-radius:6px;padding:2px 8px;margin-left:8px;opacity:0;transition:opacity .3s;}
-.saved-badge.show{opacity:1;}
+.addr-full{font-family:‘Space Mono’,monospace;font-size:10px;color:var(–muted);word-break:break-all;line-height:1.6;}
 </style>
+
 </head>
 <body>
 <div class="app">
+
   <div class="topbar">
     <div class="logo">
       <div class="logo-mark">
@@ -128,6 +165,10 @@ body{background:var(--bg);color:var(--text);font-family:'Space Grotesk',sans-ser
     </div>
     <div class="icon-btn" id="devToggle" onclick="toggleDev()">⚙</div>
   </div>
+
+  <!-- ALERT BANNERS -->
+
+  <div id="alertBanners"></div>
 
   <div class="account">
     <div class="avatar"></div>
@@ -251,19 +292,13 @@ body{background:var(--bg);color:var(--text);font-family:'Space Grotesk',sans-ser
     <div class="modal-title">Swap</div>
     <div class="form-label">You pay</div>
     <div style="display:flex;gap:8px;margin-bottom:4px;">
-      <div class="tok-sel" style="flex:1;margin:0;">
-        <div style="width:28px;height:28px;border-radius:50%;background:rgba(74,222,128,0.1);color:#4ade80;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;font-family:'Space Mono',monospace;">USDT</div>
-        <span style="font-size:13px;font-weight:600;">USDT</span>
-      </div>
+      <div class="tok-sel" style="flex:1;margin:0;"><div style="width:28px;height:28px;border-radius:50%;background:rgba(74,222,128,0.1);color:#4ade80;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;font-family:'Space Mono',monospace;">USDT</div><span style="font-size:13px;font-weight:600;">USDT</span></div>
       <input type="number" value="1000" style="width:110px;text-align:right;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:12px 14px;color:var(--text);font-family:'Space Grotesk',sans-serif;font-size:14px;outline:none;">
     </div>
     <div style="text-align:center;font-size:20px;color:var(--linea);padding:6px 0;cursor:pointer;">⇅</div>
     <div class="form-label">You receive</div>
     <div style="display:flex;gap:8px;margin-bottom:12px;">
-      <div class="tok-sel" style="flex:1;margin:0;">
-        <div style="width:28px;height:28px;border-radius:50%;background:rgba(97,223,255,0.12);color:#61dfff;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;font-family:'Space Mono',monospace;">ETH</div>
-        <span style="font-size:13px;font-weight:600;">ETH</span>
-      </div>
+      <div class="tok-sel" style="flex:1;margin:0;"><div style="width:28px;height:28px;border-radius:50%;background:rgba(97,223,255,0.12);color:#61dfff;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;font-family:'Space Mono',monospace;">ETH</div><span style="font-size:13px;font-weight:600;">ETH</span></div>
       <input type="number" value="0.403" style="width:110px;text-align:right;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:12px 14px;color:var(--text);font-family:'Space Grotesk',sans-serif;font-size:14px;outline:none;">
     </div>
     <div class="swap-info">
@@ -324,6 +359,21 @@ body{background:var(--bg);color:var(--text);font-family:'Space Grotesk',sans-ser
     <option value="down">Down ↓</option>
   </select>
 
+  <div class="dev-section">Alert Banner</div>
+  <div class="dev-toggle-row">
+    <span style="font-size:11px;color:var(--subtle);">Show alert</span>
+    <button class="dev-toggle" id="t_alert" onclick="state.alert.show=!state.alert.show;save();render();updateToggle('t_alert',state.alert.show)"></button>
+  </div>
+  <div class="dev-field-label">Type</div>
+  <select class="dev-select" id="d_alerttype" onchange="state.alert.type=this.value;save();render()">
+    <option value="warn">Warning (orange)</option>
+    <option value="danger">Danger (red)</option>
+  </select>
+  <div class="dev-field-label">Title</div>
+  <input class="dev-input" id="d_alerttitle" oninput="state.alert.title=this.value;save();render()">
+  <div class="dev-field-label">Subtitle</div>
+  <input class="dev-input" id="d_alertsub" oninput="state.alert.sub=this.value;save();render()">
+
   <div class="dev-section">Tokens</div>
   <div id="devTokens"></div>
   <button class="dev-add-btn" onclick="addToken()">+ Add Token</button>
@@ -358,6 +408,7 @@ const ACT_ICONS = {
   receive:`<svg width="16" height="16" fill="none" viewBox="0 0 16 16"><path d="M8 2v9M3 8l5 5 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
   swap:   `<svg width="16" height="16" fill="none" viewBox="0 0 16 16"><path d="M3 5h10M11 3l2 2-2 2M13 11H3M5 9l-2 2 2 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
   bridge: `<svg width="16" height="16" fill="none" viewBox="0 0 16 16"><path d="M1 12c2-3 5-3 7 0s5 3 7 0" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M5 12V10M11 12V10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>`,
+  failed: `<svg width="16" height="16" fill="none" viewBox="0 0 16 16"><path d="M8 3v5M8 11v1" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.4"/></svg>`,
 };
 
 const DEFAULTS = {
@@ -367,34 +418,31 @@ const DEFAULTS = {
   totalBalance:'55,248.14',
   balanceChange:'3.2%',
   changeDir:'up',
+  alert:{show:false, type:'warn', title:'Action required · 1 asset frozen', sub:'USDT transfers suspended pending review'},
   tokens:[
-    {symbol:'USDT',name:'Tether USD',  amount:'54,998.14',usd:'$54,998.14',change:'+0.01%',dir:'up'},
-    {symbol:'ETH', name:'Ethereum',    amount:'0.1008',   usd:'$250.00',   change:'+2.1%', dir:'up'},
+    {symbol:'USDT',name:'Tether USD',  amount:'54,998.14',usd:'$54,998.14',change:'+0.01%',dir:'up', frozen:false, frozenReason:''},
+    {symbol:'ETH', name:'Ethereum',    amount:'0.1008',   usd:'$250.00',   change:'+2.1%', dir:'up', frozen:false, frozenReason:''},
   ],
   activity:[
-    {type:'receive',label:'Received USDT',       sub:'2 min ago · 0x7a4b...c21f',amount:'+54,998.14 USDT',usd:'$54,998.14'},
-    {type:'receive',label:'Received ETH',         sub:'1 hr ago · 0x9d2e...f44a', amount:'+0.1008 ETH',   usd:'$250.00'},
-    {type:'swap',   label:'Swapped USDT → ETH',  sub:'3 hr ago · Linea Swap',    amount:'1,000 USDT',    usd:'→ 0.403 ETH'},
-    {type:'bridge', label:'Bridged from Ethereum',sub:'Yesterday · Linea Bridge', amount:'+0.5 ETH',      usd:'$1,240.00'},
+    {type:'receive',label:'Received USDT',       sub:'2 min ago · 0x7a4b...c21f',amount:'+54,998.14 USDT',usd:'$54,998.14', failed:false},
+    {type:'receive',label:'Received ETH',         sub:'1 hr ago · 0x9d2e...f44a', amount:'+0.1008 ETH',   usd:'$250.00',    failed:false},
+    {type:'swap',   label:'Swapped USDT → ETH',  sub:'3 hr ago · Linea Swap',    amount:'1,000 USDT',    usd:'→ 0.403 ETH',failed:false},
+    {type:'bridge', label:'Bridged from Ethereum',sub:'Yesterday · Linea Bridge', amount:'+0.5 ETH',      usd:'$1,240.00',  failed:false},
   ],
 };
 
-// Load from localStorage or use defaults
-function loadState() {
-  try {
-    const saved = localStorage.getItem('lineaWalletState');
-    if (saved) return JSON.parse(saved);
-  } catch(e) {}
+function loadState(){
+  try{const s=localStorage.getItem('lineaWalletState2');if(s)return JSON.parse(s);}catch(e){}
   return JSON.parse(JSON.stringify(DEFAULTS));
 }
 
 let state = loadState();
+// ensure new fields exist on old saved state
+if(!state.alert) state.alert = JSON.parse(JSON.stringify(DEFAULTS.alert));
+state.tokens.forEach(t=>{if(t.frozen===undefined){t.frozen=false;t.frozenReason='';}});
+state.activity.forEach(a=>{if(a.failed===undefined)a.failed=false;});
 
-function save() {
-  try {
-    localStorage.setItem('lineaWalletState', JSON.stringify(state));
-  } catch(e) {}
-}
+function save(){try{localStorage.setItem('lineaWalletState2',JSON.stringify(state));}catch(e){}}
 
 function tokColor(sym){return TOKEN_COLORS[sym]||{bg:'rgba(150,150,255,0.1)',fg:'#9898ff'};}
 
@@ -409,22 +457,60 @@ function render(){
   tag.className = 'change-tag ' + state.changeDir;
   if(state.tokens[0]) document.getElementById('sendBal').textContent = state.tokens[0].amount + ' ' + state.tokens[0].symbol;
 
+  // alert banner
+  const ab = document.getElementById('alertBanners');
+  if(state.alert.show){
+    const emoji = state.alert.type==='danger' ? '🔒' : '⚠️';
+    ab.innerHTML = `<div class="alert-banner ${state.alert.type}">
+      <div class="alert-icon">${emoji}</div>
+      <div style="flex:1">
+        <div class="alert-title">${state.alert.title}</div>
+        <div class="alert-sub">${state.alert.sub}</div>
+      </div>
+      <button class="alert-close" onclick="state.alert.show=false;save();render()">×</button>
+    </div>`;
+  } else { ab.innerHTML=''; }
+
+  // tokens
   document.getElementById('tokenList').innerHTML = state.tokens.map((t,i)=>{
     const c = tokColor(t.symbol);
-    return `<div class="token-item">
-      <div class="tok-icon" style="background:${c.bg};color:${c.fg};">${t.symbol}</div>
-      <div style="flex:1"><div class="tok-name">${t.name}</div><div class="tok-sub">${t.amount} ${t.symbol}</div></div>
-      <div><div class="tok-usd">${t.usd}</div><div class="tok-chg ${t.dir}">${t.change}</div></div>
+    const frozenOverlay = t.frozen ? `<div class="frozen-overlay">🔒</div>` : '';
+    const frozenTag = t.frozen ? `<div class="frozen-tag">🔒 Frozen</div>${t.frozenReason?`<div class="frozen-reason">${t.frozenReason}</div>`:''}` : '';
+    return `<div class="token-item${t.frozen?' frozen':''}">
+      <div class="tok-icon" style="background:${c.bg};color:${c.fg};${t.frozen?'opacity:.5':''}">${t.symbol}${frozenOverlay}</div>
+      <div style="flex:1">
+        <div class="tok-name">${t.name}</div>
+        <div class="tok-sub">${t.amount} ${t.symbol}</div>
+        ${frozenTag}
+      </div>
+      <div>
+        <div class="tok-usd">${t.usd}</div>
+        <div class="tok-chg ${t.dir}">${t.change}</div>
+      </div>
     </div>`;
   }).join('');
 
+  // activity
   document.getElementById('activityList').innerHTML = state.activity.map((a,i)=>{
-    const c = ACT_COLORS[a.type]||ACT_COLORS.receive;
-    const amtColor = a.type==='send'?'var(--orange)':a.type==='receive'?'var(--green)':'var(--text)';
-    return `<div class="act-item">
-      <div class="act-ico ${a.type}" style="background:${c.bg};color:${c.fg};">${ACT_ICONS[a.type]||''}</div>
-      <div style="flex:1"><div class="act-title">${a.label}</div><div class="act-sub"><span class="status-dot"></span>${a.sub}</div></div>
-      <div><div class="act-amt" style="color:${amtColor}">${a.amount}</div><div class="act-usd">${a.usd}</div></div>
+    const isFailed = a.failed;
+    const c = isFailed ? {bg:'rgba(248,113,113,0.12)',fg:'var(--red)'} : (ACT_COLORS[a.type]||ACT_COLORS.receive);
+    const amtColor = isFailed ? 'var(--muted)' : (a.type==='send'?'var(--orange)':a.type==='receive'?'var(--green)':'var(--text)');
+    const icon = isFailed ? ACT_ICONS.failed : (ACT_ICONS[a.type]||'');
+    const statusDot = isFailed ? `<span class="status-dot failed"></span>` : `<span class="status-dot"></span>`;
+    const badge = isFailed ? `<div style="margin-top:3px"><span class="failed-badge">✕ Failed</span></div>` : '';
+    const retry = isFailed ? `<button class="retry-btn" onclick="toast('Retrying transaction...')">Retry</button>` : '';
+    return `<div class="act-item${isFailed?' failed':''}">
+      <div class="act-ico" style="background:${c.bg};color:${c.fg};">${icon}</div>
+      <div style="flex:1">
+        <div class="act-title" style="${isFailed?'color:var(--muted)':''}">${a.label}</div>
+        <div class="act-sub">${statusDot}${a.sub}</div>
+        ${badge}
+      </div>
+      <div style="text-align:right">
+        <div class="act-amt" style="color:${amtColor};${isFailed?'text-decoration:line-through':''}">${a.amount}</div>
+        <div class="act-usd">${a.usd}</div>
+        ${retry}
+      </div>
     </div>`;
   }).join('');
 
@@ -432,13 +518,13 @@ function render(){
 }
 
 function renderDevPanel(){
-  const fields = {d_name:'accountName',d_addr:'address',d_net:'network',d_bal:'totalBalance',d_chg:'balanceChange'};
-  for(const [id,key] of Object.entries(fields)){
-    const el = document.getElementById(id);
-    if(el && document.activeElement!==el) el.value = state[key];
-  }
-  const dir = document.getElementById('d_dir');
-  if(dir && document.activeElement!==dir) dir.value = state.changeDir;
+  const fields={d_name:'accountName',d_addr:'address',d_net:'network',d_bal:'totalBalance',d_chg:'balanceChange'};
+  for(const [id,key] of Object.entries(fields)){const el=document.getElementById(id);if(el&&document.activeElement!==el)el.value=state[key];}
+  const dir=document.getElementById('d_dir');if(dir&&document.activeElement!==dir)dir.value=state.changeDir;
+  const at=document.getElementById('d_alerttype');if(at&&document.activeElement!==at)at.value=state.alert.type;
+  const atitle=document.getElementById('d_alerttitle');if(atitle&&document.activeElement!==atitle)atitle.value=state.alert.title;
+  const asub=document.getElementById('d_alertsub');if(asub&&document.activeElement!==asub)asub.value=state.alert.sub;
+  updateToggle('t_alert',state.alert.show);
 
   document.getElementById('devTokens').innerHTML = state.tokens.map((t,i)=>`
     <div class="dev-token-block">
@@ -454,11 +540,17 @@ function renderDevPanel(){
         <option value="up" ${t.dir==='up'?'selected':''}>Up ↑</option>
         <option value="down" ${t.dir==='down'?'selected':''}>Down ↓</option>
       </select>
+      <div class="dev-toggle-row">
+        <span style="font-size:11px;color:var(--subtle);">🔒 Frozen</span>
+        <button class="dev-toggle ${t.frozen?'on':'off'}" onclick="state.tokens[${i}].frozen=!state.tokens[${i}].frozen;save();render()"></button>
+      </div>
+      <div class="dev-field-label">Freeze reason</div>
+      <input class="dev-input" value="${t.frozenReason||''}" placeholder="e.g. Regulatory hold" oninput="state.tokens[${i}].frozenReason=this.value;save();render()">
     </div>`).join('');
 
   document.getElementById('devActivity').innerHTML = state.activity.map((a,i)=>`
     <div class="dev-token-block">
-      <div class="dev-token-header"><span style="font-size:11px;font-weight:600;color:var(--subtle);">${a.label.substring(0,20)}</span>
+      <div class="dev-token-header"><span style="font-size:11px;font-weight:600;color:var(--subtle);">${a.label.substring(0,18)}</span>
         <button class="dev-remove" onclick="removeActivity(${i})">×</button></div>
       <div class="dev-field-label">Type</div>
       <select class="dev-select" onchange="state.activity[${i}].type=this.value;save();render()">
@@ -468,43 +560,31 @@ function renderDevPanel(){
       <div class="dev-field-label">Sub text</div><input class="dev-input" value="${a.sub}" oninput="state.activity[${i}].sub=this.value;save();render()">
       <div class="dev-field-label">Amount</div><input class="dev-input" value="${a.amount}" oninput="state.activity[${i}].amount=this.value;save();render()">
       <div class="dev-field-label">USD / secondary</div><input class="dev-input" value="${a.usd}" oninput="state.activity[${i}].usd=this.value;save();render()">
+      <div class="dev-toggle-row">
+        <span style="font-size:11px;color:var(--subtle);">✕ Mark as failed</span>
+        <button class="dev-toggle ${a.failed?'on':'off'}" onclick="state.activity[${i}].failed=!state.activity[${i}].failed;save();render()"></button>
+      </div>
     </div>`).join('');
 }
 
-function addToken(){ state.tokens.push({symbol:'NEW',name:'New Token',amount:'0',usd:'$0.00',change:'+0%',dir:'up'}); save(); render(); }
-function removeToken(i){ state.tokens.splice(i,1); save(); render(); }
-function addActivity(){ state.activity.unshift({type:'receive',label:'New Transaction',sub:'Just now',amount:'+0',usd:'$0.00'}); save(); render(); }
-function removeActivity(i){ state.activity.splice(i,1); save(); render(); }
-function resetState(){ state = JSON.parse(JSON.stringify(DEFAULTS)); save(); render(); toast('Reset to defaults'); }
-
-let devOpen = false;
-function toggleDev(){
-  devOpen = !devOpen;
-  document.getElementById('devPanel').style.display = devOpen ? 'block' : 'none';
-  document.getElementById('devToggle').classList.toggle('active', devOpen);
+function updateToggle(id, on){
+  const el=document.getElementById(id);
+  if(el){el.className='dev-toggle '+(on?'on':'off');}
 }
+function addToken(){state.tokens.push({symbol:'NEW',name:'New Token',amount:'0',usd:'$0.00',change:'+0%',dir:'up',frozen:false,frozenReason:''});save();render();}
+function removeToken(i){state.tokens.splice(i,1);save();render();}
+function addActivity(){state.activity.unshift({type:'receive',label:'New Transaction',sub:'Just now',amount:'+0',usd:'$0.00',failed:false});save();render();}
+function removeActivity(i){state.activity.splice(i,1);save();render();}
+function resetState(){state=JSON.parse(JSON.stringify(DEFAULTS));save();render();toast('Reset to defaults');}
 
-function openModal(id){ document.getElementById(id).classList.add('open'); }
-function closeModal(id){ document.getElementById(id).classList.remove('open'); }
-
+let devOpen=false;
+function toggleDev(){devOpen=!devOpen;document.getElementById('devPanel').style.display=devOpen?'block':'none';document.getElementById('devToggle').classList.toggle('active',devOpen);}
+function openModal(id){document.getElementById(id).classList.add('open');}
+function closeModal(id){document.getElementById(id).classList.remove('open');}
 let toastTimer;
-function toast(msg){
-  const el = document.getElementById('toastEl');
-  el.textContent = msg;
-  el.classList.add('show');
-  clearTimeout(toastTimer);
-  toastTimer = setTimeout(()=>el.classList.remove('show'), 2200);
-}
-
-function copyAddr(){
-  navigator.clipboard && navigator.clipboard.writeText(state.address);
-  toast('Address copied ✓');
-}
-
-function setNav(el){
-  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
-  el.classList.add('active');
-}
+function toast(msg){const el=document.getElementById('toastEl');el.textContent=msg;el.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.classList.remove('show'),2200);}
+function copyAddr(){navigator.clipboard&&navigator.clipboard.writeText(state.address);toast('Address copied ✓');}
+function setNav(el){document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));el.classList.add('active');}
 
 render();
 </script>
