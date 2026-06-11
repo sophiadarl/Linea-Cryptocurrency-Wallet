@@ -424,10 +424,10 @@ const DEFAULTS = {
     {symbol:'ETH', name:'Ethereum',    amount:'0.1008',   usd:'$250.00',   change:'+2.1%', dir:'up', frozen:false, frozenReason:''},
   ],
   activity:[
-    {type:'receive',label:'Received USDT',       sub:'2 min ago · 0x7a4b...c21f',amount:'+54,998.14 USDT',usd:'$54,998.14', failed:false},
-    {type:'receive',label:'Received ETH',         sub:'1 hr ago · 0x9d2e...f44a', amount:'+0.1008 ETH',   usd:'$250.00',    failed:false},
-    {type:'swap',   label:'Swapped USDT → ETH',  sub:'3 hr ago · Linea Swap',    amount:'1,000 USDT',    usd:'→ 0.403 ETH',failed:false},
-    {type:'bridge', label:'Bridged from Ethereum',sub:'Yesterday · Linea Bridge', amount:'+0.5 ETH',      usd:'$1,240.00',  failed:false},
+    {type:'receive',label:'Received USDT',       sub:'2 min ago · 0x7a4b...c21f',amount:'+54,998.14 USDT',usd:'$54,998.14', failed:false, amtColor:'green'},
+    {type:'receive',label:'Received ETH',         sub:'1 hr ago · 0x9d2e...f44a', amount:'+0.1008 ETH',   usd:'$250.00',    failed:false, amtColor:'green'},
+    {type:'swap',   label:'Swapped USDT → ETH',  sub:'3 hr ago · Linea Swap',    amount:'1,000 USDT',    usd:'→ 0.403 ETH',failed:false, amtColor:'neutral'},
+    {type:'bridge', label:'Bridged from Ethereum',sub:'Yesterday · Linea Bridge', amount:'+0.5 ETH',      usd:'$1,240.00',  failed:false, amtColor:'green'},
   ],
 };
 
@@ -440,7 +440,7 @@ let state = loadState();
 // ensure new fields exist on old saved state
 if(!state.alert) state.alert = JSON.parse(JSON.stringify(DEFAULTS.alert));
 state.tokens.forEach(t=>{if(t.frozen===undefined){t.frozen=false;t.frozenReason='';}});
-state.activity.forEach(a=>{if(a.failed===undefined)a.failed=false;});
+state.activity.forEach(a=>{if(a.failed===undefined)a.failed=false;if(a.amtColor===undefined)a.amtColor=a.type==='send'?'orange':a.type==='receive'?'green':'neutral';});
 
 function save(){try{localStorage.setItem('lineaWalletState2',JSON.stringify(state));}catch(e){}}
 
@@ -494,7 +494,8 @@ function render(){
   document.getElementById('activityList').innerHTML = state.activity.map((a,i)=>{
     const isFailed = a.failed;
     const c = isFailed ? {bg:'rgba(248,113,113,0.12)',fg:'var(--red)'} : (ACT_COLORS[a.type]||ACT_COLORS.receive);
-    const amtColor = isFailed ? 'var(--muted)' : (a.type==='send'?'var(--orange)':a.type==='receive'?'var(--green)':'var(--text)');
+    const amtColorMap = {green:'var(--green)',orange:'var(--orange)',red:'var(--red)',neutral:'var(--text)',muted:'var(--muted)'};
+    const amtColor = isFailed ? 'var(--muted)' : (amtColorMap[a.amtColor||'neutral']||'var(--text)');
     const icon = isFailed ? ACT_ICONS.failed : (ACT_ICONS[a.type]||'');
     const statusDot = isFailed ? `<span class="status-dot failed"></span>` : `<span class="status-dot"></span>`;
     const badge = isFailed ? `<div style="margin-top:3px"><span class="failed-badge">✕ Failed</span></div>` : '';
@@ -560,6 +561,10 @@ function renderDevPanel(){
       <div class="dev-field-label">Sub text</div><input class="dev-input" value="${a.sub}" oninput="state.activity[${i}].sub=this.value;save();render()">
       <div class="dev-field-label">Amount</div><input class="dev-input" value="${a.amount}" oninput="state.activity[${i}].amount=this.value;save();render()">
       <div class="dev-field-label">USD / secondary</div><input class="dev-input" value="${a.usd}" oninput="state.activity[${i}].usd=this.value;save();render()">
+      <div class="dev-field-label">Amount colour</div>
+      <select class="dev-select" onchange="state.activity[${i}].amtColor=this.value;save();render()">
+        ${['green','orange','red','neutral','muted'].map(c=>`<option value="${c}" ${(a.amtColor||'neutral')===c?'selected':''}>${c}</option>`).join('')}
+      </select>
       <div class="dev-toggle-row">
         <span style="font-size:11px;color:var(--subtle);">✕ Mark as failed</span>
         <button class="dev-toggle ${a.failed?'on':'off'}" onclick="state.activity[${i}].failed=!state.activity[${i}].failed;save();render()"></button>
@@ -573,7 +578,7 @@ function updateToggle(id, on){
 }
 function addToken(){state.tokens.push({symbol:'NEW',name:'New Token',amount:'0',usd:'$0.00',change:'+0%',dir:'up',frozen:false,frozenReason:''});save();render();}
 function removeToken(i){state.tokens.splice(i,1);save();render();}
-function addActivity(){state.activity.unshift({type:'receive',label:'New Transaction',sub:'Just now',amount:'+0',usd:'$0.00',failed:false});save();render();}
+function addActivity(){state.activity.unshift({type:'receive',label:'New Transaction',sub:'Just now',amount:'+0',usd:'$0.00',failed:false,amtColor:'green'});save();render();}
 function removeActivity(i){state.activity.splice(i,1);save();render();}
 function resetState(){state=JSON.parse(JSON.stringify(DEFAULTS));save();render();toast('Reset to defaults');}
 
